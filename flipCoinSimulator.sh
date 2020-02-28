@@ -37,7 +37,7 @@ function percentageFlipCoin() {
 
 echo -n "How many times you want to flip a coin?"
 read coins
-echo -n "Press 1 for singlet combination or Press 2 for doublet combination Press 3 for triplet combination"
+echo -n "Press 1 for singlet combination or Press 2 for doublet combination or Press 3 for triplet combination"
 read choice
 
 case $choice in
@@ -50,6 +50,11 @@ case $choice in
   compute $coins $choice
   percentageFlipCoin
   echo "Percentage of doublet combination: ${result[@]}"
+  ;;
+  3)
+  compute $coins $choice
+  percentageFlipCoin
+  echo "Percentage of triplet combination: ${result[@]}"
   ;;
   *)
   echo "wrong input"
