@@ -2,36 +2,57 @@
 
 echo "Welcome to Flip Coin Simulation"
 
-echo -n "How many times you to want flip a coin?"
-read count
-
 declare -A result
 
 #flipping coin to display head or tail
-#flipping coin multiple times and store the singlet combination in a dictonary
+#flipping coin multiple times and store the singlet,doublet & triplet combination in a dictonary
 
-headCount=0
-tailCount=0
+function compute() {
 
-for (( index=0; index<$count; index++ ))
-do
-   calTailsOrHeads=$(( RANDOM%2 ))
-   if [[ $calTailsOrHeads -eq 1 ]]
-   then
-      headCount=$(( headCount+1 ))
-   else
-      tailCount=$(( tailCount+1 ))
-   fi
+ for (( index=0; index<$1; index++ ))
+  do
+  totalCount=""
+   for (( indexOne=0; indexOne<$2; indexOne++ ))
+   do
+    calTailsOrHeads=$(( RANDOM%2 ))
+    if [[ $calTailsOrHeads -eq 1 ]]
+    then
+       totalCount+=H
+    else
+       totalCount+=T
+    fi
+  done
+  result[$totalCount]=$(( ${result[$totalCount]}+1 ))
 done
+echo "Count of all combination: ${result[@]}"
+echo "keys                      ${!result[@]}"
+}
 
-#Storing the result in dictionary
-result[H]=$headCount
-result[T]=$tailCount
+function percentageFlipCoin() {
+ for j in ${!result[@]}
+ do
+   result[$j]=`echo "scale=2;$((${result[$j]}))/$coins*100" | bc -l`
+ done
+}
 
-#Computing Percentage of heads
-percentageOfHeads=`echo "scale=2;$headCount/$count*100" | bc -l`
-#Computing Percentage of tails
-percentageOfTails=`echo "scale=2;$tailCount/$count *100" | bc -l`
+echo -n "How many times you want to flip a coin?"
+read coins
+echo -n "Press 1 for singlet combination or Press 2 for doublet combination Press 3 for triplet combination"
+read choice
 
-echo "Percentage of heads $percentageOfHeads"
-echo "Percentage of tails $percentageOfTails"
+case $choice in
+  1)
+  compute $coins $choice
+  percentageFlipCoin
+  echo "Percentage of singlet combination: ${result[@]}"
+  ;;
+  2)
+  compute $coins $choice
+  percentageFlipCoin
+  echo "Percentage of doublet combination: ${result[@]}"
+  ;;
+  *)
+  echo "wrong input"
+  ;;
+esac
+
