@@ -66,6 +66,6 @@ esac
 #sorting singlet,doublet and triplet values
 for k in "${!result[@]}" 
 do
-  echo -n "Sorted: " ${result[@]}
+  echo -n "Sorted: " $k - ${result[@]}
 done |
 sort -rn -k3
