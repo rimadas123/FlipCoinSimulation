@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash 
 
 echo "Welcome to Flip Coin Simulation"
 
@@ -7,8 +7,8 @@ declare -A result
 #flipping coin to display head or tail
 #flipping coin multiple times and store the singlet,doublet & triplet combination in a dictonary
 
+#computing total count of heads and tails and storing in dictionary
 function compute() {
-
  for (( index=0; index<$1; index++ ))
   do
   totalCount=""
@@ -28,13 +28,15 @@ echo "Count of all combination: ${result[@]}"
 echo "keys                      ${!result[@]}"
 }
 
+#computing percentage
 function percentageFlipCoin() {
- for j in ${!result[@]}
+ for keys in ${!result[@]}
  do
-   result[$j]=`echo "scale=2;$((${result[$j]}))/$coins*100" | bc -l`
+   result[$keys]=`echo "scale=2;$((${result[$keys]}))/$coins*100" | bc -l`
  done
 }
 
+#user input
 echo -n "How many times you want to flip a coin?"
 read coins
 echo -n "Press 1 for singlet combination or Press 2 for doublet combination or Press 3 for triplet combination"
@@ -61,3 +63,9 @@ case $choice in
   ;;
 esac
 
+#sorting singlet,doublet and triplet values
+for k in "${!result[@]}" 
+do
+  echo -n "Sorted: " ${result[@]}
+done |
+sort -rn -k3
